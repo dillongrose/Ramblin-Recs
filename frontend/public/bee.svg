@@ -1,0 +1,27 @@
+<!-- public/bee.svg  (simple, original bee; not GT's Buzz) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 100">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#B3A369"/>
+      <stop offset="1" stop-color="#E6C56E"/>
+    </linearGradient>
+  </defs>
+  <!-- wings -->
+  <ellipse cx="60" cy="28" rx="22" ry="14" fill="#e8f2ff" stroke="#7da2d4" stroke-width="2"/>
+  <ellipse cx="84" cy="24" rx="20" ry="12" fill="#e8f2ff" stroke="#7da2d4" stroke-width="2"/>
+  <!-- body -->
+  <ellipse cx="70" cy="58" rx="40" ry="26" fill="url(#g)" stroke="#1e1e1e" stroke-width="3"/>
+  <rect x="45" y="42" width="50" height="32" fill="#1e1e1e" opacity="0.9"/>
+  <rect x="50" y="42" width="50" height="32" fill="#B3A369" opacity="0.9"/>
+  <rect x="55" y="42" width="50" height="32" fill="#1e1e1e" opacity="0.9"/>
+  <!-- head -->
+  <circle cx="35" cy="52" r="12" fill="#1e1e1e"/>
+  <circle cx="39" cy="48" r="3" fill="#ffffff"/>
+  <!-- stinger -->
+  <polygon points="108,58 128,58 114,70" fill="#1e1e1e"/>
+  <!-- legs -->
+  <path d="M58 78 l-8 12 M72 80 l-6 14 M86 78 l8 12" stroke="#1e1e1e" stroke-width="3" fill="none"/>
+  <!-- antennae -->
+  <path d="M28 44 q-10 -12 6 -16" stroke="#1e1e1e" stroke-width="3" fill="none"/>
+  <path d="M38 42 q-4 -10 10 -12" stroke="#1e1e1e" stroke-width="3" fill="none"/>
+</svg>

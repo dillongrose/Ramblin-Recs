@@ -1,68 +1,64 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root{
+  --gt-gold: #B3A369;       /* Tech Gold */
+  --gt-gold-2: #E6C56E;     /* lighter gold */
+  --gt-black: #1e1e1e;
+  --gt-white: #ffffff;
+  --surface: #fffef9;
+  --muted: #6b7280;
+  --radius: 14px;
+  --shadow: 0 6px 20px rgba(0,0,0,.06);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{
+  margin:0;
+  color:var(--gt-black);
+  background: linear-gradient(180deg, #fff 0%, #fffdf5 100%);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+a{ color: var(--gt-black); text-decoration:none }
+a:hover{ text-decoration:underline }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+.header{
+  position:sticky; top:0; z-index:10;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border-bottom: 4px solid var(--gt-gold);
 }
-button:hover {
-  border-color: #646cff;
+.brand{
+  display:flex; align-items:center; gap:12px; padding:14px 10px;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+.brand img{ width:34px; height:24px }
+.brand h1{ font-size:22px; margin:0; letter-spacing:0.2px }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.nav{ display:flex; gap:12px; align-items:center; padding:0 10px 12px 10px }
+.nav a{
+  padding:6px 12px; border:1px solid #e5e7eb; border-radius:999px; background:#fff;
+}
+.nav a:hover{ border-color: var(--gt-gold) }
+
+.container{ max-width:980px; margin:20px auto; padding:0 16px }
+
+.card{
+  background:#fff; border:1px solid #eee; border-radius: var(--radius);
+  padding:14px; box-shadow: var(--shadow);
+}
+.card h3{ margin:0 0 4px 0 }
+.meta{ color:#555; font-size:14px }
+.chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px }
+.chip{
+  padding:2px 8px; border:1px solid #ddd; border-radius:999px; font-size:12px;
+  background:#fff;
+}
+.btn{ padding:8px 12px; border-radius:10px; border:1px solid var(--gt-gold); background: var(--gt-gold); color:#111; font-weight:600 }
+.btn.secondary{ background:#fff; color:#111 }
+.btn:hover{ filter: brightness(0.97); }
+
+.banner{
+  margin: 12px 0 18px 0;
+  background: linear-gradient(90deg, var(--gt-gold), var(--gt-gold-2));
+  color:#111; border-radius: var(--radius);
+  padding: 10px 14px; font-weight:600;
 }

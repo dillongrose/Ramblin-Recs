@@ -9,3 +9,10 @@ pgvector==0.2.5
 numpy==1.26.4
 faker==25.9.1
 pydantic==2.8.2
+feedparser
+beautifulsoup4
+html5lib
+python-dateutil
+lxml
+aiohttp
+asyncpg

@@ -10,12 +10,29 @@ export type EventT = {
   score?: number;
   summary?: string;
   why?: string;
+  url?: string;
+  description?: string;
+  host?: string;
 };
 
-export default function EventCard({ ev, onSaved }: { ev: EventT; onSaved?: () => void }) {
+export default function EventCard({
+  ev,
+  onSaved,
+}: {
+  ev: EventT;
+  onSaved?: () => void;
+}) {
   const userId = localStorage.getItem("user_id") || "";
 
-  async function click(kind: "clicked" | "saved") {
+  const domain = (() => {
+    try {
+      return ev.url ? new URL(ev.url).hostname.replace(/^www\./, "") : "";
+    } catch {
+      return "";
+    }
+  })();
+
+  async function signal(kind: "clicked" | "saved") {
     if (!userId) return alert("Please onboard first.");
     await postJSON("/feedback", {
       user_id: userId,
@@ -26,27 +43,69 @@ export default function EventCard({ ev, onSaved }: { ev: EventT; onSaved?: () =>
   }
 
   return (
-    <div style={{ border: "1px solid #e5e5e5", borderRadius: 12, padding: 12, marginBottom: 12 }}>
-      <div style={{ display:"flex", justifyContent:"space-between", gap:12, alignItems:"baseline" }}>
+    <div className="card" style={{ marginBottom: 14 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 12,
+          alignItems: "baseline",
+        }}
+      >
         <h3 style={{ margin: 0 }}>{ev.title}</h3>
-        {typeof ev.score === "number" && <small>score {ev.score.toFixed(3)}</small>}
+        {typeof ev.score === "number" && (
+          <small className="meta">score {ev.score.toFixed(3)}</small>
+        )}
       </div>
-      <div style={{ color:"#555" }}>
+
+      <div className="meta">
         {new Date(ev.start_time).toLocaleString()}
         {ev.location ? ` • ${ev.location}` : ""}
+        {ev.host ? ` • ${ev.host}` : ""}
+        {domain && (
+          <>
+            {" "}
+            • <span className="chip" style={{ borderColor: "#ccc" }}>{domain}</span>
+          </>
+        )}
       </div>
+
       {ev.tags?.length ? (
-        <div style={{ marginTop:8, display:"flex", flexWrap:"wrap", gap:6 }}>
-          {ev.tags.map(t=>(
-            <span key={t} style={{ padding:"2px 8px", border:"1px solid #ddd", borderRadius:999, fontSize:12 }}>{t}</span>
+        <div className="chips">
+          {ev.tags.map((t) => (
+            <span key={t} className="chip">
+              {t}
+            </span>
           ))}
         </div>
       ) : null}
-      {ev.summary && <p style={{ marginTop:8 }}>{ev.summary}</p>}
-      {ev.why && <p style={{ marginTop:4, color:"#0a6" }}>Why: {ev.why}</p>}
-      <div style={{ display:"flex", gap:8, marginTop:8 }}>
-        <button onClick={()=>click("clicked")}>Like</button>
-        <button onClick={()=>click("saved")}>Save</button>
+
+      {ev.description && <p style={{ marginTop: 8, fontSize: "0.9em", color: "#666" }}>{ev.description}</p>}
+      {ev.summary && <p style={{ marginTop: 8 }}>{ev.summary}</p>}
+      {ev.why && (
+        <p style={{ marginTop: 4, color: "#0a6" }}>
+          <strong>Why:</strong> {ev.why}
+        </p>
+      )}
+
+      <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+        <button className="btn" onClick={() => signal("clicked")}>
+          Like
+        </button>
+        <button className="btn secondary" onClick={() => signal("saved")}>
+          Save
+        </button>
+        {ev.url && (
+          <a 
+            className="btn secondary" 
+            href={ev.url} 
+            target="_blank" 
+            rel="noreferrer"
+            onClick={() => signal("clicked")}
+          >
+            View on Georgia Tech
+          </a>
+        )}
       </div>
     </div>
   );
