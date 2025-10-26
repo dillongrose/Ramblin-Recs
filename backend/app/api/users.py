@@ -6,7 +6,7 @@ from ..db import SessionLocal
 from ..models.user import User
 from ..recs.embeddings import embed_text
 
-router = APIRouter()
+router = APIRouter(prefix="/users", tags=["users"])
 
 def get_db():
     db = SessionLocal()
@@ -56,4 +56,19 @@ def bootstrap_user(body: BootstrapIn, db: Session = Depends(get_db)):
         "email": u.email,
         "display_name": u.display_name,
         "interests": u.interests or [],
+    }
+
+
+@router.get("/{user_id}")
+def get_user(user_id: str, db: Session = Depends(get_db)):
+    """Get user by ID."""
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {
+        "id": str(user.id),
+        "email": user.email,
+        "display_name": user.display_name,
+        "interests": user.interests or [],
     }

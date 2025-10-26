@@ -16,3 +16,4 @@ if __name__ == "__main__":
     print("🚀 Starting Georgia Tech events ingestion...")
     asyncio.run(main())
 
+

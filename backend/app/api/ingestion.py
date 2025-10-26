@@ -20,36 +20,26 @@ router = APIRouter(prefix="/ingestion", tags=["ingestion"])
 logger = logging.getLogger(__name__)
 
 async def _run_gatech_scraper():
-    """Run the Georgia Tech event scraper"""
+    """Run the Georgia Tech RSS event scraper"""
     try:
         import sys
         import os
         sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'scripts'))
         
-        from hybrid_gatech_scraper import main as create_current_events
+        from campuslabs_rss_scraper import CampusLabsRSSScraper
         
-        # Run the current events creation script
-        create_current_events()
-        
-        # Count the events in the database
-        from sqlalchemy import text
-        from ..db import SessionLocal
-        
-        db = SessionLocal()
-        try:
-            result = db.execute(text("SELECT COUNT(*) FROM events")).scalar()
-            total_events = result or 0
-        finally:
-            db.close()
+        # Run the RSS scraper
+        async with CampusLabsRSSScraper() as scraper:
+            stored_count = await scraper.scrape_and_store_events()
         
         return {
-            "sample_events": total_events,
-            "scraped_events": 0,
-            "total_events": total_events
+            "sample_events": 0,
+            "scraped_events": stored_count,
+            "total_events": stored_count
         }
             
     except Exception as e:
-        logger.error(f"Error running Georgia Tech scraper: {e}")
+        logger.error(f"Error running Georgia Tech RSS scraper: {e}")
         raise
 
 @router.post("/gatech-events")

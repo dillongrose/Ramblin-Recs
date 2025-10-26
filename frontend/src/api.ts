@@ -15,3 +15,19 @@ export async function postJSON<T>(path: string, body: any): Promise<T> {
   if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
   return r.json();
 }
+
+export async function deleteJSON<T>(path: string, params?: Record<string, string>): Promise<T> {
+  const url = new URL(`${API}${path}`);
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+  }
+  
+  const r = await fetch(url.toString(), {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+  });
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+  return r.json();
+}

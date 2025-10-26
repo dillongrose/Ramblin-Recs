@@ -8,7 +8,7 @@ from ..models.user import User
 from ..models.event import Event
 import numpy as np
 
-router = APIRouter()
+router = APIRouter(prefix="/feedback", tags=["feedback"])
 
 def get_db():
     db = SessionLocal()

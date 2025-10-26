@@ -105,12 +105,13 @@ def _fetch_upcoming(db: Session, limit: int = 200) -> List[Dict[str, Any]]:
 def feed(
     user_id: str | None = None,
     limit: int = Query(20, ge=1, le=100),
+    page: int = Query(1, ge=1),
     db: Session = Depends(get_db),
 ):
-    """Personalized feed (simple interest + recency scoring)."""
+    """Personalized feed with pagination (simple interest + recency scoring)."""
     prov = get_provider()
     interests = _load_user_interests(db, user_id)
-    rows = _fetch_upcoming(db, limit=400)
+    rows = _fetch_upcoming(db, limit=1000)  # Get more events for better pagination
 
     scored: List[Dict[str, Any]] = []
     for r in rows:
@@ -135,7 +136,26 @@ def feed(
         scored.append(item)
 
     scored.sort(key=lambda x: x["score"], reverse=True)
-    return scored[:limit]
+    
+    # Calculate pagination
+    total_events = len(scored)
+    total_pages = (total_events + limit - 1) // limit
+    start_idx = (page - 1) * limit
+    end_idx = start_idx + limit
+    
+    events_page = scored[start_idx:end_idx]
+    
+    return {
+        "events": events_page,
+        "pagination": {
+            "current_page": page,
+            "total_pages": total_pages,
+            "total_events": total_events,
+            "events_per_page": limit,
+            "has_next": page < total_pages,
+            "has_previous": page > 1
+        }
+    }
 
 
 @router.get("/search")
